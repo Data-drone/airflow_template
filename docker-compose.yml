@@ -5,12 +5,10 @@ services:
     ports:
       - "6379:6379"
     networks: 
-      - ml_platform
+      - datalake_ml_platform
 
   postgres:
     image: postgres:10.5
-    env_file:
-      - scheduler/config/common.env
     ports:
       - "5432:5432"
     healthcheck:
@@ -19,7 +17,7 @@ services:
       timeout: 5s
       retries: 5
     networks: 
-      - ml_platform
+      - datalake_ml_platform
 
   airflow-webserver:
     build: 
@@ -34,15 +32,13 @@ services:
     volumes:
       - ../ml_platform_dags/projects:/root/airflow/ext_dags
       - "/var/run/docker.sock:/var/run/docker.sock"
-    env_file: 
-      - scheduler/config/common.env
     healthcheck:
       test: [ "CMD-SHELL", "[ -f /airflow/airflow-webserver.pid ]" ]
       interval: 30s
       timeout: 30s
       retries: 3
     networks: 
-      - ml_platform
+      - datalake_ml_platform
 
   airflow-worker-1:
     build: 
@@ -56,12 +52,10 @@ services:
     volumes:
       - ../ml_platform_dags/projects:/root/airflow/ext_dags
       - "/var/run/docker.sock:/var/run/docker.sock"
-    env_file: 
-      - scheduler/config/common.env
     environment:
       - QUEUE_NAME=queue_1
     networks: 
-      - ml_platform
+      - datalake_ml_platform
 
   airflow-worker-2:
     build: 
@@ -75,12 +69,10 @@ services:
     volumes:
       - ../ml_platform_dags/projects:/root/airflow/ext_dags
       - "/var/run/docker.sock:/var/run/docker.sock"
-    env_file: 
-      - scheduler/config/common.env
     environment:
       - QUEUE_NAME=queue_2
     networks: 
-      - ml_platform
+      - datalake_ml_platform
 
   airflow-flower:
     build: 
@@ -95,11 +87,9 @@ services:
     volumes:
       - ../ml_platform_dags/projects:/root/airflow/ext_dags
       - "/var/run/docker.sock:/var/run/docker.sock"
-    env_file: 
-      - scheduler/config/common.env
     networks: 
-      - ml_platform
+      - datalake_ml_platform
 
 networks:
-  ml_platform:
+  datalake_ml_platform:
     external: true
