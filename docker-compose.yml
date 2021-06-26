@@ -23,7 +23,7 @@ services:
     ports:
       - "6379:6379"
     networks: 
-      - datalake_ml_platform
+      - ml_platform
 
   airflow_db:
     image: postgres:10.5
@@ -41,7 +41,7 @@ services:
       timeout: 5s
       retries: 5
     networks: 
-      - datalake_ml_platform
+      - ml_platform
 
   airflow-webserver:
     build: 
@@ -64,7 +64,7 @@ services:
       timeout: 30s
       retries: 3
     networks: 
-      - datalake_ml_platform
+      - ml_platform
 
   airflow-worker-1:
     build: 
@@ -83,7 +83,7 @@ services:
     environment:
       - QUEUE_NAME=queue_1
     networks: 
-      - datalake_ml_platform
+      - ml_platform
 
   airflow-worker-2:
     build: 
@@ -102,7 +102,7 @@ services:
     environment:
       - QUEUE_NAME=queue_2
     networks: 
-      - datalake_ml_platform
+      - ml_platform
 
   airflow-flower:
     build: 
@@ -120,8 +120,8 @@ services:
       - ../ml_platform_dags/projects:/root/airflow/ext_dags
       - "/var/run/docker.sock:/var/run/docker.sock"
     networks: 
-      - datalake_ml_platform
+      - ml_platform
 
 networks:
-  datalake_ml_platform:
+  ml_platform:
     external: true
