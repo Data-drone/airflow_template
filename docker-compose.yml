@@ -1,4 +1,22 @@
 version: '3.7'
+
+x-common-variables: &common-variables
+  POSTGRES_USER: ${AF_POSTGRES_USER}
+  POSTGRES_PASSWORD: ${AF_POSTGRES_PASSWORD}
+  POSTGRES_DB: ${AF_POSTGRES_DB}
+  POSTGRES_PORT: ${AF_POSTGRES_PORT}
+  POSTGRES_HOST: ${AF_POSTGRES_HOST}
+  REDIS_HOST: ${REDIS_HOST}
+  REDIS_PORT: ${REDIS_PORT}
+  AF_USER_NAME: ${AF_USER_NAME} 
+  AF_USER_PASSWORD: ${AF_USER_PASSWORD} 
+  AF_USER_FIRST_NAME: ${AF_USER_FIRST_NAME} 
+  AF_USER_LAST_NAME: ${AF_USER_LAST_NAME} 
+  AF_USER_EMAIL: ${AF_USER_EMAIL} 
+  AF_USER_ROLE: ${AF_USER_ROLE}
+  MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY} 
+  MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+
 services:
   redis:
     image: redis:latest
@@ -35,6 +53,8 @@ services:
         condition: service_healthy
     ports:
       - "8080:8080"
+    environment:
+      <<: *common-variables
     volumes:
       - ../ml_platform_dags/projects:/root/airflow/ext_dags
       - "/var/run/docker.sock:/var/run/docker.sock"
@@ -55,6 +75,8 @@ services:
       - airflow-webserver
     ports:
       - "8081:8080"
+    environment:
+      <<: *common-variables
     volumes:
       - ../ml_platform_dags/projects:/root/airflow/ext_dags
       - "/var/run/docker.sock:/var/run/docker.sock"
@@ -72,6 +94,8 @@ services:
       - airflow-webserver
     ports:
       - "8082:8080"
+    environment:
+      <<: *common-variables
     volumes:
       - ../ml_platform_dags/projects:/root/airflow/ext_dags
       - "/var/run/docker.sock:/var/run/docker.sock"
@@ -90,6 +114,8 @@ services:
       - airflow-worker-2
     ports:
       - "5555:5555"
+    environment:
+      <<: *common-variables
     volumes:
       - ../ml_platform_dags/projects:/root/airflow/ext_dags
       - "/var/run/docker.sock:/var/run/docker.sock"
