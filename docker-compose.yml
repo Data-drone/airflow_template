@@ -30,8 +30,6 @@ services:
 
   airflow_db:
     image: postgres:10.5
-    ports:
-      - "5432:5432"
     environment:
       POSTGRES_USER: ${AF_POSTGRES_USER}
       POSTGRES_PASSWORD: ${AF_POSTGRES_PASSWORD}
