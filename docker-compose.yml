@@ -1,5 +1,8 @@
 version: '3.7'
 
+x-env-file: &env-file
+  - ${env_file}  
+
 x-common-variables: &common-variables
   POSTGRES_USER: ${AF_POSTGRES_USER}
   POSTGRES_PASSWORD: ${AF_POSTGRES_PASSWORD}
@@ -31,7 +34,7 @@ services:
   airflow_db:
     image: postgres:10.5
     ports:
-      - "${AF_POSTGRES_PORT}:${AF_POSTGRES_PORT}"
+      - "${AF_POSTGRES_PORT}:5432"
     environment:
       POSTGRES_USER: ${AF_POSTGRES_USER}
       POSTGRES_PASSWORD: ${AF_POSTGRES_PASSWORD}
@@ -58,6 +61,7 @@ services:
       - "8080:8080"
     environment:
       <<: *common-variables
+      #POSTGRES_HOST: ${AF_POSTGRES_HOST}
     volumes:
       - ../ml_platform_dags/projects:/root/airflow/ext_dags
       - "/var/run/docker.sock:/var/run/docker.sock"
@@ -80,11 +84,10 @@ services:
       - "8081:8080"
     environment:
       <<: *common-variables
+      QUEUE_NAME: queue_1
     volumes:
       - ../ml_platform_dags/projects:/root/airflow/ext_dags
       - "/var/run/docker.sock:/var/run/docker.sock"
-    environment:
-      - QUEUE_NAME=queue_1
     networks: 
       - ml_platform
 
@@ -99,11 +102,10 @@ services:
       - "8082:8080"
     environment:
       <<: *common-variables
+      QUEUE_NAME: queue_2
     volumes:
       - ../ml_platform_dags/projects:/root/airflow/ext_dags
       - "/var/run/docker.sock:/var/run/docker.sock"
-    environment:
-      - QUEUE_NAME=queue_2
     networks: 
       - ml_platform
 

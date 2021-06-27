@@ -8,13 +8,6 @@ RUN apt-get update && \
 
 WORKDIR /root/airflow
 
-COPY config/variables.json variables.json
-COPY config/connections.yml connections.yml
-COPY config/setup_connections.py setup_connections.py
-COPY config/requirements.txt requirements.txt
-COPY entrypoint.sh entrypoint.sh
-RUN chmod +x ./entrypoint.sh
-
 ## adding spark submit
 ENV SPARK_VERSION=3.1.1
 ENV HADOOP_VERSION=3.2
@@ -44,8 +37,15 @@ ENV PATH="/root/spark/bin:${PATH}"
 ENV MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
 ENV MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
 
-ENV PYTHONHASHSEED 1
+WORKDIR /root/airflow/
 
-WORKDIR /root/airflow
+COPY config/variables.json variables.json
+COPY config/connections.yml connections.yml
+COPY config/setup_connections.py setup_connections.py
+COPY config/requirements.txt requirements.txt
+COPY entrypoint.sh entrypoint.sh
+RUN chmod +x ./entrypoint.sh
+
+ENV PYTHONHASHSEED 1
 
 ENTRYPOINT ["./entrypoint.sh"]
