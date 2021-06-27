@@ -1,8 +1,5 @@
 version: '3.7'
 
-x-env-file: &env-file
-  - ${env_file}  
-
 x-common-variables: &common-variables
   POSTGRES_USER: ${AF_POSTGRES_USER}
   POSTGRES_PASSWORD: ${AF_POSTGRES_PASSWORD}
