@@ -49,7 +49,6 @@ services:
   airflow-webserver:
     build: 
       context: ./scheduler
-    restart: always
     command: webserver
     depends_on:
       airflow_db:
@@ -74,7 +73,6 @@ services:
     build: 
       context: ./scheduler
     command: worker
-    restart: always
     depends_on:
       - airflow-webserver
     ports:
@@ -92,7 +90,6 @@ services:
     build: 
       context: ./scheduler
     command: worker
-    restart: always
     depends_on:
       - airflow-webserver
     ports:
@@ -110,7 +107,6 @@ services:
     build: 
       context: ./scheduler
     command: flower
-    restart: always
     depends_on:
       - airflow-worker-1
       - airflow-worker-2
