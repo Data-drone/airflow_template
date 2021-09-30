@@ -4,12 +4,12 @@ FROM python:3.8-slim-buster
 RUN apt-get update && \
     apt-get install -y netcat && \
     apt-get install vim -y && \
-    pip3 install apache-airflow[celery,redis,postgres,crypto]==2.1.0
+    pip3 install apache-airflow[celery,redis,postgres,crypto]==2.1.4 celery==4.4.7 flower==0.9.7
 
 WORKDIR /root/airflow
 
 ## adding spark submit
-ENV SPARK_VERSION=3.1.1
+ENV SPARK_VERSION=3.1.2
 ENV HADOOP_VERSION=3.2
 
 ### Java install

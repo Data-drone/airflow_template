@@ -25,13 +25,17 @@ services:
     image: redis:latest
     ports:
       - "6379:6379"
+    volumes:
+      - redis_data:/data
     networks: 
       - ml_platform
 
   airflow_db:
-    image: postgres:10.5
+    image: postgres:10.10
     ports:
       - "${AF_POSTGRES_PORT}:5432"
+    volumes:
+      - airflow_pg_data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${AF_POSTGRES_USER}
       POSTGRES_PASSWORD: ${AF_POSTGRES_PASSWORD}
@@ -123,3 +127,7 @@ services:
 networks:
   ml_platform:
     external: true
+
+volumes:
+  redis_data:
+  airflow_pg_data:
